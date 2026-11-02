@@ -16,25 +16,8 @@ Sapiens K1 robot.
 
 ## 0. Prerequisites
 
-Install [cyclo_mjlab](https://github.com/ROBOTIS-GIT/cyclo_mjlab) first. It is
-not a dependency of this package, and it is not modified.
+Install [cyclo_mjlab](https://github.com/ROBOTIS-GIT/cyclo_mjlab) first.
 
-### Compatibility
-
-| Component | Version |
-| --- | --- |
-| cyclo_mjlab | `e659f69af227d244a4edab0bb9228e7aeaadef45` |
-| MJLab | 1.2.0 |
-| MuJoCo, MuJoCo Warp | 3.5.0 |
-| Python | 3.11 |
-
-The commit is also available as
-`cyclo_mjlab_locomotion.COMPATIBLE_CYCLO_MJLAB_COMMIT`.
-
-### Known limitations
-
-- Verified on a single GPU only. Multi-GPU training (`--gpu-ids` with more than
-  one GPU) has not been tested.
 
 ## 1. Installation
 
@@ -75,9 +58,6 @@ installed `source` package, so they take the same arguments. Logs are written to
 ```bash
 python scripts/train.py Cyclo-Velocity-Loco-A123-K1-Rev1-v0 \
   --env.scene.num-envs 2048
-
-python scripts/train.py Cyclo-Velocity-Loco-Stairs-K1-Rev1-v0 \
-  --env.scene.num-envs 2048 --agent.max-iterations 15000
 ```
 
 `params/sim2real.yaml` is written to the run folder when training starts.
@@ -87,7 +67,7 @@ python scripts/train.py Cyclo-Velocity-Loco-Stairs-K1-Rev1-v0 \
 ```bash
 python scripts/play.py Cyclo-Velocity-Loco-Stairs-K1-Rev1-v0 \
   --checkpoint-file logs/rsl_rl/k1_velocity_stairs/<run>/model_<iteration>.pt \
-  --num-envs 16
+  --num-envs 1
 ```
 
 `exported/policy.onnx` and `exported/policy.pt` are written next to the
