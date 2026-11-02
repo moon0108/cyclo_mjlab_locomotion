@@ -6,7 +6,7 @@
 
 ![브라우저 데모에서 계단을 오르는 K1 Rev1](https://moon0108.github.io/cyclo_mjlab_locomotion/static/images/stairs.gif)
 
-이 레포는 ROBOTIS AI Sapiens K1 로봇의 보행과 블라인드 계단 보행을 위한 저장소입니다.
+이 레포는 ROBOTIS AI Sapiens K1 보행과 블라인드 계단 보행을 위한 코드베이스입니다.
 
 ## 태스크
 
@@ -30,8 +30,7 @@ pip install -e /path/to/cyclo_mjlab_locomotion
 
 ### Docker
 
-cyclo_mjlab 컨테이너는 cyclo_mjlab 폴더만 `/workspace/cyclo_mjlab`에 마운트하므로,
-옆 폴더는 컨테이너 안에서 보이지 않습니다. 호스트에서 이 레포를 cyclo_mjlab 폴더 안에
+호스트에서 이 레포를 cyclo_mjlab 폴더 안에
 clone하고, cyclo_mjlab의 git status에 나타나지 않도록 제외하세요.
 
 ```bash
