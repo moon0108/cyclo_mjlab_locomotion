@@ -59,8 +59,9 @@
       <h3 class="title is-5">How to use</h3>
       <ul>
         <li>Choose <strong>Flat walking</strong> or <strong>Stair walking</strong> above the demo.</li>
-        <li>Check <strong>Enable</strong> under Base Velocity. Until then, the robot follows random commands.</li>
-        <li>Move the <strong>lin_vel_x</strong>, <strong>lin_vel_y</strong>, and <strong>ang_vel_z</strong> sliders to steer. Set only ang_vel_z to turn in place. <strong>Zero</strong> clears them. The stair demo goes up to 0.8 m/s and has no lateral slider.</li>
+        <li>Hold <strong>W</strong> to walk forward, and <strong>A</strong> or <strong>D</strong> to turn left or right. Releasing the keys stops the robot.</li>
+        <li>For finer control, check <strong>Enable</strong> under Base Velocity. Until then, the robot follows random commands.</li>
+        <li>Move the <strong>lin_vel_x</strong>, <strong>lin_vel_y</strong>, and <strong>ang_vel_z</strong> sliders to steer. Set only ang_vel_z to turn in place. <strong>Zero</strong> clears them. The stair demo goes up to 0.8 m/s, and its lin_vel_y slider is locked at 0.</li>
         <li>Drag the robot with the mouse to pull it.</li>
         <li>Under <strong>Interact</strong>, select <strong>Push</strong> and click the robot to shove it.</li>
         <li><strong>Reset</strong> restarts the simulation. In the stair demo, it also respawns the robot on a random terrain patch.</li>
@@ -107,6 +108,72 @@
       }
     });
   }
+
+  // W, A, D steer through the same engine call as the panel sliders.
+  // The page exposes no engine handle, so it is read from the React tree.
+  const FORWARD_SPEED = 0.6;
+  const TURN_RATE = 0.8;
+  const held = new Set();
+  let engine = null;
+
+  function findEngine(doc) {
+    const root = doc.getElementById('root') || doc.getElementById('app') || doc.body;
+    const key = Object.keys(root).find((name) => name.startsWith('__reactContainer'));
+    const stack = key ? [root[key]] : [];
+    const seen = new Set();
+    while (stack.length) {
+      const fiber = stack.pop();
+      if (!fiber || seen.has(fiber)) continue;
+      seen.add(fiber);
+      for (let hook = fiber.memoizedState; hook && typeof hook === 'object'; hook = hook.next) {
+        const ref = hook.memoizedState?.current;
+        if (ref?.runtime && ref.commands) return ref;
+      }
+      stack.push(fiber.child, fiber.sibling, fiber.return);
+    }
+    return null;
+  }
+
+  function steer() {
+    engine ??= frame.contentDocument && findEngine(frame.contentDocument);
+    if (!engine) return;
+    const definitions = engine.runtime.commands.getCommands();
+    const set = (name, value) => {
+      const command = definitions.find((definition) => definition.id.endsWith(name));
+      if (command) engine.commands.set(command.id, value);
+    };
+    if (held.size) set('enabled', 1);
+    set('lin_vel_x', held.has('w') ? FORWARD_SPEED : 0);
+    set('ang_vel_z', (held.has('a') ? TURN_RATE : 0) - (held.has('d') ? TURN_RATE : 0));
+  }
+
+  function onKey(event) {
+    const key = event.key.toLowerCase();
+    const typing = event.target.matches?.('input:not([type=checkbox])');
+    if (!'wad'.includes(key) || key.length !== 1 || typing) return;
+    event.preventDefault();
+    if (event.repeat) return;
+    held[event.type === 'keydown' ? 'add' : 'delete'](key);
+    steer();
+  }
+
+  function release() {
+    held.clear();
+    steer();
+  }
+
+  function listen(target) {
+    target.addEventListener('keydown', onKey);
+    target.addEventListener('keyup', onKey);
+    target.addEventListener('blur', release);
+  }
+
+  listen(window);
+  frame.addEventListener('load', () => {
+    engine = null;
+    listen(frame.contentWindow);
+  });
+  if (frame.contentDocument?.readyState === 'complete') listen(frame.contentWindow);
 </script>
 </body>
 </html>
