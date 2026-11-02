@@ -16,6 +16,11 @@ cyclo_mjlab itself is not modified.
 The commit is also available as
 `cyclo_mjlab_locomotion.COMPATIBLE_CYCLO_MJLAB_COMMIT`.
 
+### Known limitations
+
+- Verified on a single GPU only. Multi-GPU training (`--gpu-ids` with more than
+  one GPU) has not been tested.
+
 ## Tasks
 
 | Task ID | Description |
@@ -48,7 +53,9 @@ echo cyclo_mjlab_locomotion/ >> .git/info/exclude
 pip install -e /workspace/cyclo_mjlab/cyclo_mjlab_locomotion
 ```
 
-Run the install again when the container is recreated.
+The install lives in the container, not in the mounted folder. Run
+`pip install -e` again whenever the container is recreated, for example after
+`./docker/container.sh clean`.
 
 ## Usage
 
@@ -97,3 +104,8 @@ mix of flat patches and stairs.
 ```bash
 python -m pytest tests
 ```
+
+## License
+
+Apache License 2.0. See [LICENSE](LICENSE) and [NOTICE](NOTICE) for the code
+derived from cyclo_mjlab and MJLab.

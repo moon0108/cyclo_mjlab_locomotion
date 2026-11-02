@@ -1,0 +1,18 @@
+cyclo_mjlab_locomotion
+Copyright 2026 ROBOTIS CO., LTD.
+
+This project is licensed under the Apache License 2.0. See LICENSE.
+
+It includes code copied or adapted from the following Apache-2.0 projects:
+
+cyclo_mjlab (https://github.com/ROBOTIS-GIT/cyclo_mjlab)
+Copyright 2026 ROBOTIS CO., LTD.
+  - velocity/config/k1_rev1/env_cfgs.py: built on the K1 Rev.1 flat task
+  - velocity/config/k1_rev1/stairs_env_cfg.py: _use_varied_play_terrain
+  - scripts/train.py, scripts/play.py: wrappers that load the upstream scripts
+
+mjlab (https://github.com/mujocolab/mjlab)
+Copyright 2025, The mjlab Developers
+  - velocity/mdp/rewards.py: feet_clearance_above_stance adapts feet_clearance
+  - velocity/config/k1_rev1/stairs_env_cfg.py: _use_varied_play_terrain follows
+    the G1 play configuration

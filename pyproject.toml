@@ -1,5 +1,5 @@
 [build-system]
-requires = ["setuptools>=68", "wheel"]
+requires = ["setuptools>=77", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
@@ -7,6 +7,8 @@ name = "cyclo_mjlab_locomotion"
 version = "0.1.0"
 description = "A123 and stair walking velocity tasks for cyclo_mjlab"
 readme = "README.md"
+license = "Apache-2.0"
+license-files = ["LICENSE", "NOTICE"]
 requires-python = ">=3.11"
 # cyclo_mjlab is not on PyPI: install this package into an environment that
 # already has it. See COMPATIBLE_CYCLO_MJLAB_COMMIT for the tested commit.
