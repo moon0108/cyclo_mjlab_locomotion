@@ -2,9 +2,9 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta name="description" content="Interactive browser demo of an A123 walking policy for the ROBOTIS AI Sapiens K1 Rev1 humanoid.">
+  <meta name="description" content="Interactive browser demos of walking and blind stair walking policies for the ROBOTIS AI Sapiens K1 Rev1 humanoid.">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>K1 Rev1 A123 Locomotion</title>
+  <title>K1 Rev1 Locomotion</title>
   <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans" rel="stylesheet">
   <link rel="stylesheet" href="./static/css/bulma.min.css">
   <link rel="stylesheet" href="./static/css/index.css">
@@ -14,8 +14,8 @@
 <section class="hero">
   <div class="hero-body">
     <div class="container is-max-desktop has-text-centered">
-      <h1 class="title is-1 publication-title">K1 Rev1 A123 Locomotion</h1>
-      <p class="is-size-5">Walking policy for the ROBOTIS AI Sapiens K1, running live in your browser</p>
+      <h1 class="title is-1 publication-title">K1 Rev1 Locomotion</h1>
+      <p class="is-size-5">Walking and blind stair walking for the ROBOTIS AI Sapiens K1, running live in your browser</p>
       <div class="buttons is-centered mt-4">
         <a class="button is-dark is-rounded" href="https://github.com/moon0108/cyclo_mjlab_locomotion">GitHub</a>
         <a class="button is-rounded" href="#demo">Interactive Demo</a>
@@ -29,11 +29,15 @@
     <h2 class="title is-3">Overview</h2>
     <div class="content has-text-justified">
       <p>
-        A single policy for the K1 Rev1 humanoid covers flat-ground walking at variable speed and
+        The walking policy for the K1 Rev1 humanoid covers flat-ground walking at variable speed and
         turning. It follows forward velocity from 0 to 1.5 m/s, lateral velocity up to &plusmn;0.5 m/s,
         and yaw rate up to &plusmn;1 rad/s, including turning in place. It was trained with
         <a href="https://github.com/mujocolab/mjlab">MJLab</a> on top of
         <a href="https://github.com/ROBOTIS-GIT/cyclo_mjlab">cyclo_mjlab</a>.
+      </p>
+      <p>
+        A second policy adds blind stair walking. Without any terrain sensing, it walks up and down
+        stairs with steps from 2 to 10 cm at 0.3 to 0.8 m/s, and it keeps the flat-ground commands above.
       </p>
     </div>
   </div>
@@ -46,15 +50,20 @@
       The physics and the policy run on your device, so nothing needs to be installed.
       Loading takes a few seconds on first visit.
     </p>
-    <iframe class="demo-frame" src="./demo/" title="K1 Rev1 A123 interactive demo" allow="fullscreen" allowfullscreen></iframe>
+    <div class="buttons">
+      <button class="button is-link" id="demo-walk">Flat walking</button>
+      <button class="button" id="demo-stairs">Stair walking</button>
+    </div>
+    <iframe class="demo-frame" id="demo-frame" src="./demo/" title="K1 Rev1 interactive demo" allow="fullscreen" allowfullscreen></iframe>
     <div class="content mt-4">
       <h3 class="title is-5">How to use</h3>
       <ul>
+        <li>Choose <strong>Flat walking</strong> or <strong>Stair walking</strong> above the demo.</li>
         <li>Check <strong>Enable</strong> under Base Velocity. Until then, the robot follows random commands.</li>
-        <li>Move the <strong>lin_vel_x</strong>, <strong>lin_vel_y</strong>, and <strong>ang_vel_z</strong> sliders to steer. Set only ang_vel_z to turn in place. <strong>Zero</strong> clears all three.</li>
+        <li>Move the <strong>lin_vel_x</strong>, <strong>lin_vel_y</strong>, and <strong>ang_vel_z</strong> sliders to steer. Set only ang_vel_z to turn in place. <strong>Zero</strong> clears them. The stair demo goes up to 0.8 m/s and has no lateral slider.</li>
         <li>Drag the robot with the mouse to pull it.</li>
         <li>Under <strong>Interact</strong>, select <strong>Push</strong> and click the robot to shove it.</li>
-        <li><strong>Reset</strong> restarts the simulation.</li>
+        <li><strong>Reset</strong> restarts the simulation. In the stair demo, it also respawns the robot on a random terrain patch.</li>
       </ul>
     </div>
   </div>
@@ -64,6 +73,7 @@
   <div class="container is-max-desktop">
     <h2 class="title is-3">Video</h2>
     <img class="demo-gif" src="./static/images/demo.gif" alt="K1 Rev1 walking and turning in the browser demo">
+    <img class="demo-gif mt-4" src="./static/images/stairs.gif" alt="K1 Rev1 climbing stairs in the browser demo">
     <p class="has-text-centered mt-2 is-size-7">Recorded from the demo above.</p>
   </div>
 </section>
@@ -83,5 +93,20 @@
   </div>
 </footer>
 
+<script>
+  const frame = document.getElementById('demo-frame');
+  const scenes = [
+    ['demo-walk', './demo/?scene=cyclo_velocity_loco_a123_k1_rev1_v0&policy=model_15000'],
+    ['demo-stairs', './demo/?scene=cyclo_velocity_loco_stairs_k1_rev1_v0&policy=model_14999'],
+  ];
+  for (const [id, url] of scenes) {
+    document.getElementById(id).addEventListener('click', () => {
+      frame.src = url;
+      for (const [other] of scenes) {
+        document.getElementById(other).classList.toggle('is-link', other === id);
+      }
+    });
+  }
+</script>
 </body>
 </html>
