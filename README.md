@@ -46,7 +46,7 @@ git status:
 
 ```bash
 cd cyclo_mjlab
-git clone <cyclo_mjlab_locomotion repository URL>
+git clone https://github.com/moon0108/cyclo_mjlab_locomotion.git
 echo cyclo_mjlab_locomotion/ >> .git/info/exclude
 ./docker/container.sh start
 ./docker/container.sh enter
