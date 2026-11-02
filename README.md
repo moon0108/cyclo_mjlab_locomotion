@@ -1,0 +1,99 @@
+# cyclo_mjlab_locomotion
+
+A123 flat walking and blind stair walking velocity tasks for the ROBOTIS K1,
+packaged separately from [cyclo_mjlab](https://github.com/ROBOTIS-GIT/cyclo_mjlab).
+cyclo_mjlab itself is not modified.
+
+## Compatibility
+
+| Component | Version |
+| --- | --- |
+| cyclo_mjlab | `e659f69af227d244a4edab0bb9228e7aeaadef45` |
+| MJLab | 1.2.0 |
+| MuJoCo, MuJoCo Warp | 3.5.0 |
+| Python | 3.11 |
+
+The commit is also available as
+`cyclo_mjlab_locomotion.COMPATIBLE_CYCLO_MJLAB_COMMIT`.
+
+## Tasks
+
+| Task ID | Description |
+| --- | --- |
+| `Cyclo-Velocity-Loco-A123-K1-Rev1-v0` | Flat walking: 0-1.5 m/s forward (limit grows from 1.0 m/s with tracking), +-1 rad/s yaw, 20% in-place turning |
+| `Cyclo-Velocity-Loco-Stairs-K1-Rev1-v0` | 25% flat patches and 75% up/down stairs, 2-10 cm steps, flat ground at level 0. Stair envs walk at 0.3-0.8 m/s in heading mode; flat envs use the A123 commands |
+
+## Installation
+
+cyclo_mjlab is not a dependency of this package: install it first, then install
+this package into the same environment.
+
+```bash
+pip install -e /path/to/cyclo_mjlab_locomotion
+```
+
+### Docker
+
+The cyclo_mjlab container only mounts the cyclo_mjlab folder, at
+`/workspace/cyclo_mjlab`, so a sibling folder is not visible inside it. Clone
+this repository inside cyclo_mjlab on the host, and keep it out of cyclo_mjlab's
+git status:
+
+```bash
+cd cyclo_mjlab
+git clone <cyclo_mjlab_locomotion repository URL>
+echo cyclo_mjlab_locomotion/ >> .git/info/exclude
+./docker/container.sh start
+./docker/container.sh enter
+pip install -e /workspace/cyclo_mjlab/cyclo_mjlab_locomotion
+```
+
+Run the install again when the container is recreated.
+
+## Usage
+
+The wrappers run cyclo_mjlab's own `train.py` and `play.py`, found next to the
+installed `source` package, so they take the same arguments. Logs are written to
+`logs/rsl_rl/` under the current folder.
+
+### Train
+
+```bash
+python scripts/train.py Cyclo-Velocity-Loco-A123-K1-Rev1-v0 \
+  --env.scene.num-envs 2048
+
+python scripts/train.py Cyclo-Velocity-Loco-Stairs-K1-Rev1-v0 \
+  --env.scene.num-envs 2048 --agent.max-iterations 15000
+```
+
+`params/sim2real.yaml` is written to the run folder when training starts.
+
+### Play
+
+```bash
+python scripts/play.py Cyclo-Velocity-Loco-Stairs-K1-Rev1-v0 \
+  --checkpoint-file logs/rsl_rl/k1_velocity_stairs/<run>/model_<iteration>.pt \
+  --num-envs 16
+```
+
+`exported/policy.onnx` and `exported/policy.pt` are written next to the
+checkpoint. Use `--export-only True` to export without starting a viewer.
+
+### Evaluate
+
+Writes A1-A3 tracking metrics to a table and a CSV next to the checkpoint.
+
+```bash
+python scripts/eval_velocity_a123.py \
+  --task Cyclo-Velocity-Loco-A123-K1-Rev1-v0 \
+  --checkpoint-file logs/rsl_rl/k1_velocity_stairs/<run>/model_<iteration>.pt
+```
+
+The A123 task evaluates on flat ground. The stairs task evaluates on a random
+mix of flat patches and stairs.
+
+## Tests
+
+```bash
+python -m pytest tests
+```
