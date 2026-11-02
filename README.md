@@ -12,8 +12,8 @@
 
 | 태스크 ID | 설명 |
 | --- | --- |
-| `Cyclo-Velocity-Loco-A123-K1-Rev1-v0` | 평지 보행: 전진 0~1.5 m/s(추적 성능에 따라 상한이 1.0 m/s부터 증가), yaw ±1 rad/s, 제자리 선회 20% |
-| `Cyclo-Velocity-Loco-Stairs-K1-Rev1-v0` | 평지 패치 25%, 오르막·내리막 계단 75%, 계단 높이 2~10 cm, 레벨 0은 평지. 계단 env는 heading 모드로 0.3~0.8 m/s로 걷고, 평지 env는 A123 명령을 사용 |
+| `Cyclo-Velocity-Loco-A123-K1-Rev1-v0` | 평지 보행: 전진 0-1.5 m/s(추적 성능에 따라 상한이 1.0 m/s부터 증가), yaw ±1 rad/s, 제자리 선회 20% |
+| `Cyclo-Velocity-Loco-Stairs-K1-Rev1-v0` | 평지 패치 25%, 오르막·내리막 계단 75%, 계단 높이 2-10 cm, 레벨 0은 평지. 계단 env는 heading 모드로 0.3-0.8 m/s로 걷고, 평지 env는 A123 명령을 사용 |
 
 ## 0. 사전 설치
 
