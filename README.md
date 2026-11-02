@@ -4,6 +4,8 @@
 
 ![K1 Rev1 walking and turning in the browser demo](https://moon0108.github.io/cyclo_mjlab_locomotion/static/images/demo.gif)
 
+![K1 Rev1 climbing stairs in the browser demo](https://moon0108.github.io/cyclo_mjlab_locomotion/static/images/stairs.gif)
+
 This repository provides walking and blind stair walking for the ROBOTIS AI
 Sapiens K1 robot.
 
