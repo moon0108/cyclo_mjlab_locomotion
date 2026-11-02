@@ -86,6 +86,10 @@ python scripts/play.py Cyclo-Velocity-Loco-Stairs-K1-Rev1-v0 \
 `exported/policy.onnx` and `exported/policy.pt` are written next to the
 checkpoint. Use `--export-only True` to export without starting a viewer.
 
+The container sets `MUJOCO_GL=glfw`. Without a display, `--video True` fails with
+an OpenGL error, as it does with cyclo_mjlab's own `play.py`. Prefix the command
+with `MUJOCO_GL=egl` to render offscreen.
+
 ### Evaluate
 
 Writes A1-A3 tracking metrics to a table and a CSV next to the checkpoint.
@@ -102,6 +106,7 @@ mix of flat patches and stairs.
 ## Tests
 
 ```bash
+pip install pytest
 python -m pytest tests
 ```
 
