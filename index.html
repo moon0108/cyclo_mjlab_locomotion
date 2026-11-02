@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="description" content="Interactive browser demo of an A123 walking policy for the ROBOTIS AI Sapiens K1 Rev1 humanoid.">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>K1 Rev1 A123 Locomotion</title>
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans" rel="stylesheet">
+  <link rel="stylesheet" href="./static/css/bulma.min.css">
+  <link rel="stylesheet" href="./static/css/index.css">
+</head>
+<body>
+
+<section class="hero">
+  <div class="hero-body">
+    <div class="container is-max-desktop has-text-centered">
+      <h1 class="title is-1 publication-title">K1 Rev1 A123 Locomotion</h1>
+      <p class="is-size-5">Walking policy for the ROBOTIS AI Sapiens K1, running live in your browser</p>
+      <div class="buttons is-centered mt-4">
+        <a class="button is-dark is-rounded" href="https://github.com/moon0108/cyclo_mjlab_locomotion">GitHub</a>
+        <a class="button is-rounded" href="#demo">Interactive Demo</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section pt-2">
+  <div class="container is-max-desktop">
+    <h2 class="title is-3">Overview</h2>
+    <div class="content has-text-justified">
+      <p>
+        A single policy for the K1 Rev1 humanoid covers flat-ground walking at variable speed and
+        turning. It follows forward velocity from 0 to 1.5 m/s, lateral velocity up to &plusmn;0.5 m/s,
+        and yaw rate up to &plusmn;1 rad/s, including turning in place. It was trained with
+        <a href="https://github.com/mujocolab/mjlab">MJLab</a> on top of
+        <a href="https://github.com/ROBOTIS-GIT/cyclo_mjlab">cyclo_mjlab</a>.
+      </p>
+    </div>
+  </div>
+</section>
+
+<section class="section pt-2" id="demo">
+  <div class="container is-max-widescreen">
+    <h2 class="title is-3">Interactive Demo</h2>
+    <p class="mb-4">
+      The physics and the policy run on your device, so nothing needs to be installed.
+      Loading takes a few seconds on first visit.
+    </p>
+    <iframe class="demo-frame" src="./demo/" title="K1 Rev1 A123 interactive demo" allow="fullscreen" allowfullscreen></iframe>
+    <div class="content mt-4">
+      <h3 class="title is-5">How to use</h3>
+      <ul>
+        <li>Check <strong>Enable</strong> under Base Velocity. Until then, the robot follows random commands.</li>
+        <li>Move the <strong>lin_vel_x</strong>, <strong>lin_vel_y</strong>, and <strong>ang_vel_z</strong> sliders to steer. Set only ang_vel_z to turn in place. <strong>Zero</strong> clears all three.</li>
+        <li>Drag the robot with the mouse to pull it.</li>
+        <li>Under <strong>Interact</strong>, select <strong>Push</strong> and click the robot to shove it.</li>
+        <li><strong>Reset</strong> restarts the simulation.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="section pt-2">
+  <div class="container is-max-desktop">
+    <h2 class="title is-3">Video</h2>
+    <img class="demo-gif" src="./static/images/demo.gif" alt="K1 Rev1 walking and turning in the browser demo">
+    <p class="has-text-centered mt-2 is-size-7">Recorded from the demo above.</p>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="container is-max-desktop">
+    <div class="content has-text-centered is-size-7">
+      <p>
+        The demo is built with <a href="https://github.com/ttktjmt/mjswan">mjswan</a> using MJLab 1.6 and
+        MuJoCo 3.11. The policy was trained with MJLab 1.2 and MuJoCo 3.5.
+      </p>
+      <p>
+        Page template adapted from <a href="https://github.com/nerfies/nerfies.github.io">Nerfies</a>,
+        licensed under <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a>.
+      </p>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

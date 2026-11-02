@@ -1,0 +1,14 @@
+body { font-family: 'Noto Sans', sans-serif; }
+.title.publication-title { font-family: 'Google Sans', sans-serif; }
+.hero-body { padding-bottom: 1.5rem; }
+.demo-frame {
+  display: block;
+  width: 100%;
+  height: min(78vh, 720px);
+  min-height: 520px;
+  border: 1px solid #dbdbdb;
+  border-radius: 8px;
+  background: #000;
+}
+.demo-gif { display: block; max-width: 100%; margin: 0 auto; border-radius: 8px; }
+.footer { padding: 2rem 1.5rem; }
