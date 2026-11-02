@@ -1,29 +1,28 @@
 # cyclo_mjlab_locomotion
 
-**[Project page and interactive demo](https://moon0108.github.io/cyclo_mjlab_locomotion/)**
+**[프로젝트 페이지 및 인터랙티브 데모](https://moon0108.github.io/cyclo_mjlab_locomotion/)**
 
-![K1 Rev1 walking and turning in the browser demo](https://moon0108.github.io/cyclo_mjlab_locomotion/static/images/demo.gif)
+![브라우저 데모에서 걷고 회전하는 K1 Rev1](https://moon0108.github.io/cyclo_mjlab_locomotion/static/images/demo.gif)
 
-![K1 Rev1 climbing stairs in the browser demo](https://moon0108.github.io/cyclo_mjlab_locomotion/static/images/stairs.gif)
+![브라우저 데모에서 계단을 오르는 K1 Rev1](https://moon0108.github.io/cyclo_mjlab_locomotion/static/images/stairs.gif)
 
-This repository provides walking and blind stair walking for the ROBOTIS AI
-Sapiens K1 robot.
+이 레포는 ROBOTIS AI Sapiens K1 로봇의 보행과 블라인드 계단 보행을 위한 저장소입니다.
 
-## Tasks
+## 태스크
 
-| Task ID | Description |
+| 태스크 ID | 설명 |
 | --- | --- |
-| `Cyclo-Velocity-Loco-A123-K1-Rev1-v0` | Flat walking: 0-1.5 m/s forward (limit grows from 1.0 m/s with tracking), +-1 rad/s yaw, 20% in-place turning |
-| `Cyclo-Velocity-Loco-Stairs-K1-Rev1-v0` | 25% flat patches and 75% up/down stairs, 2-10 cm steps, flat ground at level 0. Stair envs walk at 0.3-0.8 m/s in heading mode; flat envs use the A123 commands |
+| `Cyclo-Velocity-Loco-A123-K1-Rev1-v0` | 평지 보행: 전진 0~1.5 m/s(추적 성능에 따라 상한이 1.0 m/s부터 증가), yaw ±1 rad/s, 제자리 선회 20% |
+| `Cyclo-Velocity-Loco-Stairs-K1-Rev1-v0` | 평지 패치 25%, 오르막·내리막 계단 75%, 계단 높이 2~10 cm, 레벨 0은 평지. 계단 env는 heading 모드로 0.3~0.8 m/s로 걷고, 평지 env는 A123 명령을 사용 |
 
-## 0. Prerequisites
+## 0. 사전 설치
 
-Install [cyclo_mjlab](https://github.com/ROBOTIS-GIT/cyclo_mjlab) first.
+먼저 [cyclo_mjlab](https://github.com/ROBOTIS-GIT/cyclo_mjlab)을 설치하세요.
 
 
-## 1. Installation
+## 1. 설치
 
-Install this package into the same environment as cyclo_mjlab.
+cyclo_mjlab과 같은 환경에 이 패키지를 설치하세요.
 
 ```bash
 pip install -e /path/to/cyclo_mjlab_locomotion
@@ -31,10 +30,9 @@ pip install -e /path/to/cyclo_mjlab_locomotion
 
 ### Docker
 
-The cyclo_mjlab container only mounts the cyclo_mjlab folder, at
-`/workspace/cyclo_mjlab`, so a sibling folder is not visible inside it. Clone
-this repository inside cyclo_mjlab on the host, and keep it out of cyclo_mjlab's
-git status:
+cyclo_mjlab 컨테이너는 cyclo_mjlab 폴더만 `/workspace/cyclo_mjlab`에 마운트하므로,
+옆 폴더는 컨테이너 안에서 보이지 않습니다. 호스트에서 이 레포를 cyclo_mjlab 폴더 안에
+clone하고, cyclo_mjlab의 git status에 나타나지 않도록 제외하세요.
 
 ```bash
 cd cyclo_mjlab
@@ -45,26 +43,24 @@ echo cyclo_mjlab_locomotion/ >> .git/info/exclude
 pip install -e /workspace/cyclo_mjlab/cyclo_mjlab_locomotion
 ```
 
-The install lives in the container, not in the mounted folder. Run
-`pip install -e` again whenever the container is recreated, for example after
-`./docker/container.sh clean`.
+설치 정보는 마운트된 폴더가 아니라 컨테이너 안에 저장됩니다. `./docker/container.sh clean`
+등으로 컨테이너를 다시 만들 때마다 `pip install -e`를 다시 실행하세요.
 
-## Usage
+## 사용법
 
-The wrappers run cyclo_mjlab's own `train.py` and `play.py`, found next to the
-installed `source` package, so they take the same arguments. Logs are written to
-`logs/rsl_rl/` under the current folder.
+이 레포의 스크립트는 설치된 `source` 패키지 위치에서 cyclo_mjlab의 `train.py`와 `play.py`를
+찾아 그대로 실행하므로, 인자도 같습니다. 로그는 현재 폴더의 `logs/rsl_rl/`에 저장됩니다.
 
-### Train
+### 학습
 
 ```bash
 python scripts/train.py Cyclo-Velocity-Loco-A123-K1-Rev1-v0 \
   --env.scene.num-envs 2048
 ```
 
-`params/sim2real.yaml` is written to the run folder when training starts.
+학습을 시작하면 실행 폴더에 `params/sim2real.yaml`이 생성됩니다.
 
-### Play
+### 실행
 
 ```bash
 python scripts/play.py Cyclo-Velocity-Loco-Stairs-K1-Rev1-v0 \
@@ -72,10 +68,10 @@ python scripts/play.py Cyclo-Velocity-Loco-Stairs-K1-Rev1-v0 \
   --num-envs 1
 ```
 
-`exported/policy.onnx` and `exported/policy.pt` are written next to the
-checkpoint. Use `--export-only True` to export without starting a viewer.
+체크포인트와 같은 폴더에 `exported/policy.onnx`와 `exported/policy.pt`가 생성됩니다.
+뷰어 없이 내보내기만 하려면 `--export-only True`를 사용하세요.
 
-## License
+## 라이선스
 
-Apache License 2.0. See [LICENSE](LICENSE) and [NOTICE](NOTICE) for the code
-derived from cyclo_mjlab and MJLab.
+Apache License 2.0을 따릅니다. cyclo_mjlab과 MJLab에서 가져온 코드는 [LICENSE](LICENSE)와
+[NOTICE](NOTICE)를 참고하세요.
