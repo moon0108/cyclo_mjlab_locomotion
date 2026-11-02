@@ -1,10 +1,21 @@
 # cyclo_mjlab_locomotion
 
-A123 flat walking and blind stair walking velocity tasks for the ROBOTIS K1,
-packaged separately from [cyclo_mjlab](https://github.com/ROBOTIS-GIT/cyclo_mjlab).
-cyclo_mjlab itself is not modified.
+This repository provides walking and blind stair walking for the ROBOTIS AI
+Sapiens K1 robot.
 
-## Compatibility
+## Tasks
+
+| Task ID | Description |
+| --- | --- |
+| `Cyclo-Velocity-Loco-A123-K1-Rev1-v0` | Flat walking: 0-1.5 m/s forward (limit grows from 1.0 m/s with tracking), +-1 rad/s yaw, 20% in-place turning |
+| `Cyclo-Velocity-Loco-Stairs-K1-Rev1-v0` | 25% flat patches and 75% up/down stairs, 2-10 cm steps, flat ground at level 0. Stair envs walk at 0.3-0.8 m/s in heading mode; flat envs use the A123 commands |
+
+## 0. Prerequisites
+
+Install [cyclo_mjlab](https://github.com/ROBOTIS-GIT/cyclo_mjlab) first. It is
+not a dependency of this package, and it is not modified.
+
+### Compatibility
 
 | Component | Version |
 | --- | --- |
@@ -21,17 +32,9 @@ The commit is also available as
 - Verified on a single GPU only. Multi-GPU training (`--gpu-ids` with more than
   one GPU) has not been tested.
 
-## Tasks
+## 1. Installation
 
-| Task ID | Description |
-| --- | --- |
-| `Cyclo-Velocity-Loco-A123-K1-Rev1-v0` | Flat walking: 0-1.5 m/s forward (limit grows from 1.0 m/s with tracking), +-1 rad/s yaw, 20% in-place turning |
-| `Cyclo-Velocity-Loco-Stairs-K1-Rev1-v0` | 25% flat patches and 75% up/down stairs, 2-10 cm steps, flat ground at level 0. Stair envs walk at 0.3-0.8 m/s in heading mode; flat envs use the A123 commands |
-
-## Installation
-
-cyclo_mjlab is not a dependency of this package: install it first, then install
-this package into the same environment.
+Install this package into the same environment as cyclo_mjlab.
 
 ```bash
 pip install -e /path/to/cyclo_mjlab_locomotion
@@ -85,30 +88,6 @@ python scripts/play.py Cyclo-Velocity-Loco-Stairs-K1-Rev1-v0 \
 
 `exported/policy.onnx` and `exported/policy.pt` are written next to the
 checkpoint. Use `--export-only True` to export without starting a viewer.
-
-The container sets `MUJOCO_GL=glfw`. Without a display, `--video True` fails with
-an OpenGL error, as it does with cyclo_mjlab's own `play.py`. Prefix the command
-with `MUJOCO_GL=egl` to render offscreen.
-
-### Evaluate
-
-Writes A1-A3 tracking metrics to a table and a CSV next to the checkpoint.
-
-```bash
-python scripts/eval_velocity_a123.py \
-  --task Cyclo-Velocity-Loco-A123-K1-Rev1-v0 \
-  --checkpoint-file logs/rsl_rl/k1_velocity_stairs/<run>/model_<iteration>.pt
-```
-
-The A123 task evaluates on flat ground. The stairs task evaluates on a random
-mix of flat patches and stairs.
-
-## Tests
-
-```bash
-pip install pytest
-python -m pytest tests
-```
 
 ## License
 
